@@ -47,7 +47,8 @@ module OpenGraphy
       end
 
       def http
-        Net::HTTP.new(uri.host, uri.port, read_timeout: 5).tap do |http|
+        Net::HTTP.new(uri.host, uri.port).tap do |http|
+          http.read_timeout = 5.0
           http.use_ssl = ssl?
         end
       end

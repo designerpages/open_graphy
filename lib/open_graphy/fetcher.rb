@@ -39,12 +39,7 @@ module OpenGraphy
       end
 
       def request
-        request_object = Net::HTTP::Get.new(uri.request_uri, headers)
-        # set the read timeout to 1ms
-        # i.e. if we can't read the response or a chunk within 1ms this will cause a
-        # Net::ReadTimeout error when the request is made
-        #request_object.read_timeout = 5.0
-        request_object
+       Net::HTTP::Get.new(uri.request_uri, headers)
       end
 
       def response
@@ -52,7 +47,7 @@ module OpenGraphy
       end
 
       def http
-        Net::HTTP.new(uri.host, uri.port).tap do |http|
+        Net::HTTP.new(uri.host, uri.port, read_timeout: 5).tap do |http|
           http.use_ssl = ssl?
         end
       end

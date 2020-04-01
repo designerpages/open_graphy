@@ -39,7 +39,13 @@ module OpenGraphy
       end
 
       def request
-       Net::HTTP::Get.new(uri.request_uri, headers)
+        begin
+          Net::HTTP::Get.new(uri.request_uri, headers)
+        rescue Timeout::Error => exc
+          raise "ERROR: #{exc.message}"
+        rescue Errno::ETIMEDOUT => exc
+          raise "ERROR: #{exc.message}"
+        end 
       end
 
       def response
